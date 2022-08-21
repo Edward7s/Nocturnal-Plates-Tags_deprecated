@@ -15,7 +15,6 @@ namespace Nocturnal.Utils
             public string PasswordCode { get; set; }
             public string UserId { get; set; }
             public Tags UserTags { get; set; }
-
             public WebReq WebReq { get; set; }
         }
 

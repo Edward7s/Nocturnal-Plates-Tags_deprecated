@@ -31,7 +31,7 @@ namespace Nocturnal.Utils
             {           
                 if (textBox1.Text.Length != 7) return;
                 Task.Run(() => MessageHandler.SendLogInInfo(textBox1.Text));
-                //this.Close();
+                this.Close();
             }
             catch { }
            

@@ -37,7 +37,9 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="DarkRift.Client, Version=2.4.5.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="DarkRift.Client">
+      <HintPath>..\..\..\steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\DarkRift.Client.dll</HintPath>
+    </Reference>
     <Reference Include="DissonanceVoip">
       <HintPath>..\..\..\steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\DissonanceVoip.dll</HintPath>
     </Reference>
@@ -276,6 +278,7 @@
     </Compile>
     <Compile Include="Utils\InvokeManager.cs" />
     <Compile Include="Utils\Json.cs" />
+    <Compile Include="Utils\PlateManager.cs" />
     <Compile Include="Utils\UserChecks.cs" />
     <Compile Include="Utils\WebReqManager.cs" />
     <Compile Include="Utils\WebScoketHandler.cs" />

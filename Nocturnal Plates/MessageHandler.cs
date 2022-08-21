@@ -17,42 +17,70 @@ namespace Nocturnal
 {
     internal class MessageHandler
     {
-        private static int s_code { get; set; }
-
-        private static Json.PayLoad s_payLoade { get; set; }
-        internal static Task SendLogInInfo(string Pin)
+        private static Json.PayLoad s_payLoad { get; set; }
+        internal static async Task SendLogInInfo(string Pin)
         {
-            string result = WebReqManager.SendPostReq("https://napi.nocturnal-client.xyz/AccountHandler", new Utils.Json.PayLoad()
+            MelonLoader.MelonLogger.Msg("Sending Info");
+            try
             {
-                PasswordCode = Pin,
-                UserId = MetaPort.Instance.ownerId,
-                WebReq = new Json.WebReq()
+                string result = await WebReqManager.SendWebReq("Post", "https://napi.nocturnal-client.xyz/AccountHandler", null, JsonConvert.SerializeObject(new Utils.Json.PayLoad()
                 {
-                    Username = MetaPort.Instance.username,
-                    AccessKey = typeof(ABI_RC.Core.Networking.API.ApiConnection).GetField("_accessKey", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null).ToString()
-                }
-           });
-            MelonLoader.MelonLogger.Msg(result);
-            if (!result.StartsWith("Pin Setted To The Current Id")) return null;
-            s_payLoade = JsonConvert.DeserializeObject<Json.PayLoad>(File.ReadAllText(Directory.GetCurrentDirectory() + "//Nocturnal//PlatesLogInfo.json"));
-            s_payLoade.PasswordCode = Pin;
-            Main.Pin = Pin;
-            File.WriteAllText(Directory.GetCurrentDirectory() + "//Nocturnal//PlatesLogInfo.json",JsonConvert.SerializeObject(s_payLoade));
-            s_payLoade = null;
-            return null;
+                    PasswordCode = Pin,
+                    WebReq = new Json.WebReq()
+                    {
+                        Username = MetaPort.Instance.username,
+                        AccessKey = MetaPort.Instance.accessKey,
+                       // AccessKey = typeof(ABI_RC.Core.Networking.API.ApiConnection).GetField("_accessKey", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null).ToString()
+                    }
+                }));
+              //  MelonLoader.MelonLogger.Msg("Recived Info");
+        //        MelonLoader.MelonLogger.Msg(result);
+                if (!result.StartsWith("Pin")) return;
+                s_payLoad = JsonConvert.DeserializeObject<Json.PayLoad>(File.ReadAllText(Directory.GetCurrentDirectory() + "//Nocturnal//PlatesLogInfo.json"));
+                s_payLoad.PasswordCode = Pin;
+                Main.Pin = Pin;
+                File.WriteAllText(Directory.GetCurrentDirectory() + "//Nocturnal//PlatesLogInfo.json", JsonConvert.SerializeObject(s_payLoad));
+                s_payLoad = null;
+                return;
+            }
+            catch(Exception ex) {
+                MelonLoader.MelonLogger.Msg(ex);
+            }
+          
         }
         internal static void OnMessageRecived(object sender, MessageEventArgs e)
         {
-            s_code = int.Parse(e.Data.Substring(9, 1));
-            switch (s_code)
+            try
             {
-                case 1:
-                    UserChecks.Instance.RecivedErrorAuth();
-                    break;
-                case 2:
-                
-                    break;
+                Json.PayLoad payLoad = JsonConvert.DeserializeObject<Json.PayLoad>(e.Data);
+              //  MelonLoader.MelonLogger.Msg(e.Data);
+                switch (payLoad.Code)
+                {
+                    case 1:
+                        string key1 = Guid.NewGuid().ToString();
+                        Main.InvokeDictionary.Add(key1, new Action(() => {
+                            Main.InvokeDictionary.Remove(key1);
+                            key1 = null;
+                            UserChecks.Instance.RecivedErrorAuth();
+                        }
+                        ));
+                        break;
+                    case 2:
+                        string key = Guid.NewGuid().ToString();
+                        Main.InvokeDictionary.Add(key, new Action(() => {
+                            Main.InvokeDictionary.Remove(key);
+                            key = null;
+                            PlateManager.GeneretaeMultiplePlates(payLoad.UserId, payLoad.UserTags.TagArr);
+                        }
+                        ));
+                        break;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+          
         }
         internal static void SocketConnected(object sender, EventArgs e) => UpdateTags();
         internal static void UpdateTags()
@@ -63,7 +91,6 @@ namespace Nocturnal
                 PasswordCode = Main.Pin,
                 UserId = MetaPort.Instance.ownerId,
                 UserTags = new Json.Tags() { TagArr = Main.Tags }
-
             }));
         }
 

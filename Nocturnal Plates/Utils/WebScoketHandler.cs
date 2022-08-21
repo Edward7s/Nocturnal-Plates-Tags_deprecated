@@ -22,8 +22,7 @@ namespace Nocturnal.Utils
                 {
                     try
                     {
-                        if (e.WasClean)
-                            _webSocket.Connect();
+                     _webSocket.Connect();
                     }
                     catch (Exception ex)
                     {

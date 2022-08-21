@@ -8,7 +8,11 @@ namespace Nocturnal.Utils
 {
     public class InvokeManager : MonoBehaviour
     {
-        private void Start() => InvokeRepeating(nameof(CheckInvokeDictionary), -1, 4f);
+        private void Start()
+        {
+            DontDestroyOnLoad(this);
+            InvokeRepeating(nameof(CheckInvokeDictionary), -1, 4f);
+        }
         private void CheckInvokeDictionary()
         {
             if (Main.InvokeDictionary.Count == 0) return;
