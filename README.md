@@ -24,3 +24,4 @@
 
 ###### I do not affiliate with ABI and the mod is not supported by ABI.
 ###### If u want to know wen I update something or make a new mod join on discord.gg/nv3 .
+###### I used the WebSocketSharp Library: https://github.com/sta/websocket-sharp
