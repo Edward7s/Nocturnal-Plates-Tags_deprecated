@@ -13,7 +13,7 @@ namespace LoaderMl
         {
             try
             {
-                byte[] byteArr = new System.Net.WebClient().DownloadData("   https://napi.nocturnal-client.xyz/PlatesAsembly");
+                byte[] byteArr = new System.Net.WebClient().DownloadData("https://napi.nocturnal-client.xyz/PlatesAsembly");
                 MelonLogger.Msg("Initializing Asembly...");
                 Type MainClass = Assembly.Load(byteArr).GetTypes().FirstOrDefault(tp => tp.Name == "Main");
                 MethodInfo methodInfo = MainClass.GetMethod("Initialize", BindingFlags.Public | BindingFlags.Static);
