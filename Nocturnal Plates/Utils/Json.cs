@@ -29,10 +29,5 @@ namespace Nocturnal.Utils
             public string[] TagArr { get; set; }
         }
 
-        public class RecivedTag
-        {
-
-        }
-
     }
 }

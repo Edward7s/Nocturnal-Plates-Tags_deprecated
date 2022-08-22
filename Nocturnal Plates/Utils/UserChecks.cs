@@ -27,7 +27,6 @@ namespace Nocturnal.Utils
             }
             Main.Pin = json.PasswordCode;
         }
-
         public void RecivedErrorAuth()
         {
             MelonLoader.MelonLogger.Error("Pin Invalid");

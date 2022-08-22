@@ -33,8 +33,7 @@ namespace Nocturnal
                        // AccessKey = typeof(ABI_RC.Core.Networking.API.ApiConnection).GetField("_accessKey", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null).ToString()
                     }
                 }));
-              //  MelonLoader.MelonLogger.Msg("Recived Info");
-        //        MelonLoader.MelonLogger.Msg(result);
+                //MelonLoader.MelonLogger.Msg(result);
                 if (!result.StartsWith("Pin")) return;
                 s_payLoad = JsonConvert.DeserializeObject<Json.PayLoad>(File.ReadAllText(Directory.GetCurrentDirectory() + "//Nocturnal//PlatesLogInfo.json"));
                 s_payLoad.PasswordCode = Pin;
@@ -53,7 +52,6 @@ namespace Nocturnal
             try
             {
                 Json.PayLoad payLoad = JsonConvert.DeserializeObject<Json.PayLoad>(e.Data);
-              //  MelonLoader.MelonLogger.Msg(e.Data);
                 switch (payLoad.Code)
                 {
                     case 1:

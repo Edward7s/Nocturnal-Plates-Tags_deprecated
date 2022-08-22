@@ -13,10 +13,10 @@ using UnityEngine;
 using System.Net.Http;
 using System.Linq;
 using UnityEngine.SceneManagement;
-
+using System.Reflection;
 namespace Nocturnal
 {
-    public class Main : MelonMod
+    public class Main
     {
         public static Dictionary<string, Action> InvokeDictionary { get; private set; } = new Dictionary<string, Action>();
         public static string Pin { get; set; }
@@ -24,20 +24,16 @@ namespace Nocturnal
         public static GameObject NamePlate { get; set; }
 
         public static HttpClient HttpClient { get; } = new HttpClient();
-        [Obsolete]
-        private static HarmonyInstance s_hInstance { get; } = new HarmonyInstance(Guid.NewGuid().ToString());
-        [Obsolete]
-        public override void OnApplicationStart() =>   
+        private static HarmonyLib.Harmony s_hInstance { get; } = new HarmonyLib.Harmony(Guid.NewGuid().ToString());
+        public static void Initialize() => 
             MelonCoroutines.Start(WaitForId());
-
-        [Obsolete]
+       
         private static IEnumerator WaitForId()
         {
+            MelonLogger.Msg("Asembly Initialized.");
             new Config();
             while (MetaPort.Instance == null) yield return null;
-
             while (MetaPort.Instance.accessKey == null) yield return null;
-
             new UserChecks();
             new WebScoketHandler();
             s_hInstance.Patch(typeof(PlayerNameplate).GetMethod(nameof(PlayerNameplate.UpdateNamePlate)), null, typeof(Main).GetMethod(nameof(OnPlateUpdate), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).ToNewHarmonyMethod());
