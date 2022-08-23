@@ -30,7 +30,7 @@ namespace Nocturnal
        
         private static IEnumerator WaitForId()
         {
-            MelonLogger.Msg("Asembly Initialized.");
+            MelonLogger.Msg("Assembly Initialized.");
             new Config();
             while (MetaPort.Instance == null) yield return null;
             while (MetaPort.Instance.accessKey == null) yield return null;

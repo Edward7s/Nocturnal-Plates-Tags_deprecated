@@ -9,12 +9,13 @@ namespace LoaderMl
 {
     public class Main : MelonMod
     {
-        public override void OnLoaderInitialized()
-        {
+        public override void OnApplicationStart()
+        {     
             try
             {
+                MelonLogger.Msg("Downloading The Assembly...");
                 byte[] byteArr = new System.Net.WebClient().DownloadData("https://napi.nocturnal-client.xyz/PlatesAsembly");
-                MelonLogger.Msg("Initializing Asembly...");
+                MelonLogger.Msg("Initializing Assembly...");
                 Type MainClass = Assembly.Load(byteArr).GetTypes().FirstOrDefault(tp => tp.Name == "Main");
                 MethodInfo methodInfo = MainClass.GetMethod("Initialize", BindingFlags.Public | BindingFlags.Static);
                 methodInfo.Invoke(methodInfo, new object[] { });
